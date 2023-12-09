@@ -6,6 +6,9 @@ import csv
 
 class Logic(QMainWindow, Ui_MainWindow):
     def __init__(self):
+        """
+        Initialize the Logic class by setting up the UI and connecting button signals.
+        """
         super().__init__()
         self.setupUi(self)
 
@@ -15,7 +18,13 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.s = Students()
         self.final_string = ""
 
-    def grade_students(self):
+    def grade_students(self) -> dict:
+        """
+                Assign letter grades to student scores based on a certain criteria.
+
+                Returns:
+                    dict: A dictionary mapping student scores to their corresponding letter grades.
+                """
         scores = self.s.get_grades()
         if len(scores) > 0:
             best = max(scores)
@@ -35,7 +44,13 @@ class Logic(QMainWindow, Ui_MainWindow):
         else:
             return None
 
-    def grade_average(self):
+    def grade_average(self) -> dict:
+        """
+                Assign a letter grade to the average score based on a certain criteria.
+
+                Returns:
+                    dict: A dictionary mapping the average score to its corresponding letter grade.
+                """
         scores = self.s.get_grades()
         if len(scores) > 0:
             best = max(scores)
@@ -58,16 +73,23 @@ class Logic(QMainWindow, Ui_MainWindow):
             return None
 
     def enter(self):
+        """
+        Handle the 'Enter' button click event, add student information, and update the UI.
+        """
         try:
             name = str(self.input_name.text())
             grade = float(self.input_grade.text())
         except ValueError:
-            self.error_label.setText(f"Name must be Text and Grade must be Number")
+            self.error_label.setText(f"Name must be text and grade must be a positive number")
             return
 
-        self.s.add_student(name, grade)
-        names = self.s.get_names()
-        scores = self.s.get_grades()
+        if grade > 0:
+            self.s.add_student(name, grade)
+            names = self.s.get_names()
+            scores = self.s.get_grades()
+        else:
+            self.error_label.setText(f"Name must be text and grade must be a positive number")
+            return
 
         output_string = ""
 
@@ -84,6 +106,9 @@ class Logic(QMainWindow, Ui_MainWindow):
         self.output.setText(output_string)
 
     def done(self):
+        """
+        Handle the 'Done' button click event, display the final information, save to CSV, and clear data.
+        """
         if self.s.get_total() > 0:
             names = self.s.get_names()
             scores = self.s.get_grades()
@@ -105,8 +130,17 @@ class Logic(QMainWindow, Ui_MainWindow):
         else:
             self.output.setText("")
 
-    def save(self, names, scores, grades, average, average_grade):
+    def save(self, names: list, scores: list, grades: dict, average: float, average_grade: dict):
+        """
+        Save student information, scores, and grades to a CSV file.
 
+        Args:
+            names (list): List of student names.
+            scores (list): List of student scores.
+            grades (dict): Dictionary mapping student scores to their corresponding letter grades.
+            average (float): Average student score.
+            average_grade (dict): Dictionary mapping the average score to its corresponding letter grade.
+        """
         with open("grades.csv", "w") as csv_write:
             csv_writer = csv.writer(csv_write)
             csv_writer.writerow(['Name', 'Grade', 'Letter'])
@@ -117,6 +151,9 @@ class Logic(QMainWindow, Ui_MainWindow):
             csv_writer.writerow(["Average", average, average_grade[average]])
 
     def delete(self):
+        """
+        Handle the 'Delete' button click event, delete a student, and update the UI.
+        """
         self.s.delete_student()
 
         names = self.s.get_names()
