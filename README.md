@@ -18,5 +18,5 @@ Ex:
 ## Installing PyQt6
 For this program to run, you mast install PyQt6. To do this you should run the following in the terminal.
 ```
-pip install pyqt6
+pip3 install pyqt6
 ```
