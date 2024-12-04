@@ -15,8 +15,10 @@ Ex:
                 else:
                     letter_grade = 'F'
 ```
+## Python
+This program is written in Python, you must install Python from https://www.python.org/ in order for the program to run.
 ## Installing PyQt6
-For this program to run, you mast install PyQt6. To do this you should run the following in the terminal.
+For this program to run, you must install PyQt6. To do this you should run the following in the terminal.
 ```
 pip3 install pyqt6
 ```
